@@ -1,0 +1,38 @@
+{
+  "manifest_version": 3,
+  "name": "Note Table Helper",
+  "version": "1.0.0",
+  "description": "note.comで記事を作成する際に、表をTeX形式で簡単に入力できるようにする補助ツールです。",
+  "icons": {
+    "48": "icons/icon-48.png",
+    "96": "icons/icon-96.png",
+    "128": "icons/icon-128.png"
+  },
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "clipboardRead",
+    "contextMenus"
+  ],
+  "host_permissions": [
+    "https://editor.note.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://editor.note.com/*"],
+      "js": ["content/content.js"],
+      "css": ["content/content.css"]
+    }
+  ],
+  "action": {
+    "default_icon": {
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    },
+    "default_title": "Note Table Helper",
+    "default_popup": "popup/popup.html"
+  }
+}

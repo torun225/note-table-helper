@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Note Table Helper</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <div class="lang-switcher-top">
+      <div class="lang-switcher">
+        <button class="lang-btn active" data-lang="ja">JP</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+      </div>
+    </div>
+
+    <div class="table-settings">
+      <div class="setting-item">
+        <label class="checkbox-label">
+          <input type="checkbox" id="hasHeader" checked>
+          <span data-i18n="hasHeader">ヘッダー行</span>
+        </label>
+      </div>
+      <button id="pasteTeX" class="btn btn-sm btn-success" data-i18n="pasteTeX">TeXをペースト</button>
+    </div>
+
+    <div id="tableContainer"></div>
+
+    <div id="message" class="message"></div>
+
+    <div class="action-buttons-bottom">
+      <button id="copyTex" class="btn btn-secondary" data-i18n="copyTex">TeXをコピー</button>
+      <button id="insertToNote" class="btn btn-primary" data-i18n="insertToNote">Noteに挿入</button>
+    </div>
+  </div>
+  <script src="i18n.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

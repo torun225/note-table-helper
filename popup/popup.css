@@ -1,0 +1,283 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 13px;
+  width: 550px;
+  max-height: 500px;
+  overflow-y: auto;
+  background-color: #f5f5f5;
+}
+
+.container {
+  padding: 10px;
+}
+
+.lang-switcher-top {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.lang-switcher {
+  display: flex;
+  gap: 4px;
+}
+
+.lang-btn {
+  padding: 4px 8px;
+  border: 1px solid #ddd;
+  background-color: white;
+  color: #555;
+  border-radius: 3px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 28px;
+}
+
+.lang-btn:hover {
+  background-color: #f8f9fa;
+  border-color: #aaa;
+}
+
+.lang-btn.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.table-settings {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+  background-color: white;
+  padding: 8px;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.setting-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.setting-item label {
+  color: #555;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.setting-item input[type="number"] {
+  width: 50px;
+  padding: 4px 6px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  font-size: 12px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+  margin: 0;
+}
+
+.btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 3px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-sm {
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #545b62;
+}
+
+.btn-success {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-success:hover {
+  background-color: #218838;
+}
+
+#tableContainer {
+  overflow-x: auto;
+  max-height: 350px;
+  overflow-y: auto;
+  background-color: white;
+  border-radius: 6px;
+  padding: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+}
+
+.editable-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.editable-table th,
+.editable-table td {
+  border: 1px solid #ddd;
+  padding: 4px;
+  min-width: 80px;
+}
+
+.editable-table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+}
+
+.editable-table input {
+  width: 100%;
+  border: none;
+  padding: 2px 4px;
+  font-size: 12px;
+  background-color: transparent;
+}
+
+.editable-table input:focus {
+  outline: 2px solid #007bff;
+  background-color: #fff;
+}
+
+.message {
+  margin-bottom: 8px;
+  padding: 6px 10px;
+  border-radius: 3px;
+  text-align: center;
+  font-size: 12px;
+  display: none;
+}
+
+.message.success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+  display: block;
+}
+
+.message.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  display: block;
+}
+
+.action-buttons-bottom {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  background-color: white;
+  padding: 8px;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Row and Column Controls */
+.table-wrapper {
+  position: relative;
+}
+
+.col-controls td {
+  text-align: center;
+  padding: 2px;
+  background-color: #f8f9fa;
+  border: none;
+}
+
+.row-add-controls td {
+  padding: 2px;
+  background-color: #f8f9fa;
+  border: none;
+}
+
+.add-col-cell,
+.add-row-cell {
+  width: 50px;
+  text-align: center;
+  padding: 2px;
+  background-color: #f8f9fa;
+  border: none;
+}
+
+.row-controls {
+  width: 50px;
+  text-align: center;
+  padding: 2px;
+  background-color: #f8f9fa;
+  border: none;
+}
+
+.delete-row-btn,
+.delete-col-btn {
+  background-color: transparent;
+  border: none;
+  color: #dc3545;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 2px;
+  transition: all 0.2s;
+  min-width: 24px;
+}
+
+.delete-row-btn:hover,
+.delete-col-btn:hover {
+  background-color: #dc3545;
+  color: white;
+}
+
+.add-row-btn,
+.add-col-btn {
+  background-color: #28a745;
+  color: white;
+  font-size: 10px;
+  padding: 4px 8px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-weight: 500;
+}
+
+.add-row-btn:hover,
+.add-col-btn:hover {
+  background-color: #218838;
+}
