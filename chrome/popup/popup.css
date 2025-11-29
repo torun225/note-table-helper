@@ -135,6 +135,15 @@ body {
   background-color: #218838;
 }
 
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+}
+
 #tableContainer {
   overflow-x: auto;
   max-height: 350px;

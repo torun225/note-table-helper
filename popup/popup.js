@@ -1,3 +1,15 @@
+// ブラウザAPI互換性
+const browserAPI = (function() {
+  if (typeof browser !== "undefined") {
+    return browser;
+  } else if (typeof chrome !== "undefined") {
+    return chrome;
+  } else {
+    console.error("No browser API available");
+    return null;
+  }
+})();
+
 // DOM要素の取得
 const hasHeaderCheckbox = document.getElementById('hasHeader');
 const tableContainer = document.getElementById('tableContainer');
@@ -85,12 +97,14 @@ function addRow() {
   const cols = currentTableData[0]?.length || 3;
   currentTableData.push(Array(cols).fill(''));
   renderTable();
+  saveTableData();
 }
 
 // 列を追加
 function addColumn() {
   currentTableData.forEach(row => row.push(''));
   renderTable();
+  saveTableData();
 }
 
 // 行を削除
@@ -101,6 +115,7 @@ function deleteRow(rowIndex) {
   }
   currentTableData.splice(rowIndex, 1);
   renderTable();
+  saveTableData();
 }
 
 // 列を削除
@@ -111,6 +126,7 @@ function deleteColumn(colIndex) {
   }
   currentTableData.forEach(row => row.splice(colIndex, 1));
   renderTable();
+  saveTableData();
 }
 
 // セルの入力を処理
@@ -119,6 +135,7 @@ function handleCellInput(event) {
   const col = parseInt(event.target.dataset.col);
   currentTableData[row][col] = event.target.value;
   updateTeXOutput();
+  saveTableData();
 }
 
 // TeXコードを生成
@@ -195,23 +212,27 @@ function insertToNote() {
     return;
   }
 
-  // アクティブなタブにメッセージを送信
-  browser.tabs.query({ active: true, currentWindow: true }).then(tabs => {
-    if (tabs[0]) {
-      browser.tabs.sendMessage(tabs[0].id, {
-        action: 'insertTeX',
-        tex: tex
-      }).then(response => {
-        if (response && response.success) {
-          showMessage(i18n.get('messages.insertedToNote'), 'success');
-        } else {
-          showMessage(i18n.get('messages.insertFailed'), 'error');
-        }
-      }).catch(err => {
-        showMessage(i18n.get('messages.insertFailed'), 'error');
-        console.error('挿入エラー:', err);
-      });
+  // editor.note.comのタブを検索
+  browserAPI.tabs.query({ url: "https://editor.note.com/*" }).then(tabs => {
+    if (tabs.length === 0) {
+      showMessage(i18n.get('messages.insertFailed'), 'error');
+      return;
     }
+
+    // 最初に見つかったeditor.note.comタブにメッセージを送信
+    browserAPI.tabs.sendMessage(tabs[0].id, {
+      action: 'insertTeX',
+      tex: tex
+    }).then(response => {
+      if (response && response.success) {
+        showMessage(i18n.get('messages.insertedToNote'), 'success');
+      } else {
+        showMessage(i18n.get('messages.insertFailed'), 'error');
+      }
+    }).catch(err => {
+      showMessage(i18n.get('messages.insertFailed'), 'error');
+      console.error('挿入エラー:', err);
+    });
   }).catch(err => {
     showMessage(i18n.get('messages.tabGetFailed'), 'error');
     console.error('タブ取得エラー:', err);
@@ -277,16 +298,91 @@ function pasteTeXFromClipboard() {
       return;
     }
 
-    // テーブルデータを設定
-    currentTableData = tableData;
+    try {
+      // テーブルデータを設定
+      currentTableData = tableData;
 
-    // 表を再描画
-    renderTable();
+      // 表を再描画
+      renderTable();
 
-    showMessage(i18n.get('messages.texPasted'), 'success');
+      // 成功メッセージを表示
+      showMessage(i18n.get('messages.texPasted'), 'success');
+
+      // データを保存（非同期だが成功メッセージには影響しない）
+      saveTableData();
+    } catch (err) {
+      console.error('テーブル生成エラー:', err);
+      showMessage(i18n.get('messages.invalidTeX'), 'error');
+    }
   }).catch(err => {
     showMessage(i18n.get('messages.pasteFailed'), 'error');
     console.error('ペーストエラー:', err);
+  });
+}
+
+// データを保存
+function saveTableData() {
+  if (!browserAPI || !browserAPI.storage) {
+    console.error('Storage API not available');
+    return;
+  }
+  browserAPI.storage.local.set({
+    tableData: currentTableData,
+    hasHeader: hasHeaderCheckbox.checked
+  }).catch(err => {
+    console.error('データ保存エラー:', err);
+  });
+}
+
+// データを読み込み
+function loadTableData() {
+  // Storage APIが利用できない場合は初期表を生成
+  if (!browserAPI || !browserAPI.storage) {
+    console.warn('Storage API not available, initializing with default table');
+    currentTableData = Array(3).fill(null).map(() => Array(3).fill(''));
+    renderTable();
+    return;
+  }
+
+  browserAPI.storage.local.get(['tableData', 'hasHeader']).then(result => {
+    if (result.tableData && result.tableData.length > 0) {
+      currentTableData = result.tableData;
+      if (result.hasHeader !== undefined) {
+        hasHeaderCheckbox.checked = result.hasHeader;
+      }
+      renderTable();
+    } else {
+      // 保存データがない場合は初期表を生成
+      currentTableData = Array(3).fill(null).map(() => Array(3).fill(''));
+      renderTable();
+    }
+  }).catch(err => {
+    console.error('データ読み込みエラー:', err);
+    // エラー時は初期表を生成
+    currentTableData = Array(3).fill(null).map(() => Array(3).fill(''));
+    renderTable();
+  });
+}
+
+// テーブルをリセット
+function resetTable() {
+  if (!browserAPI || !browserAPI.storage) {
+    // Storage APIがない場合は直接リセット
+    currentTableData = Array(3).fill(null).map(() => Array(3).fill(''));
+    hasHeaderCheckbox.checked = true;
+    renderTable();
+    showMessage(i18n.get('messages.tableReset'), 'success');
+    return;
+  }
+
+  browserAPI.storage.local.remove(['tableData', 'hasHeader']).then(() => {
+    currentTableData = Array(3).fill(null).map(() => Array(3).fill(''));
+    hasHeaderCheckbox.checked = true;
+    renderTable();
+    showMessage(i18n.get('messages.tableReset'), 'success');
+  }).catch(err => {
+    console.error('リセットエラー:', err);
+    showMessage('リセットに失敗しました', 'error');
   });
 }
 
@@ -308,9 +404,11 @@ function setupLanguageSwitcher() {
 hasHeaderCheckbox.addEventListener('change', () => {
   if (currentTableData.length > 0) {
     renderTable(); // ヘッダー設定変更時に再描画
+    saveTableData();
   }
 });
 document.getElementById('pasteTeX').addEventListener('click', pasteTeXFromClipboard);
+document.getElementById('resetTable').addEventListener('click', resetTable);
 copyTexBtn.addEventListener('click', copyTeXToClipboard);
 insertToNoteBtn.addEventListener('click', insertToNote);
 
@@ -318,6 +416,5 @@ insertToNoteBtn.addEventListener('click', insertToNote);
 setupLanguageSwitcher();
 i18n.updateUI();
 
-// 初期表を生成
-currentTableData = Array(3).fill(null).map(() => Array(3).fill(''));
-renderTable();
+// 保存データを読み込み
+loadTableData();

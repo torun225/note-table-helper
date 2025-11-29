@@ -5,6 +5,7 @@ const translations = {
     hasHeader: 'ヘッダー行',
     generateTable: '生成',
     pasteTeX: 'TeXをペースト',
+    resetTable: 'リセット',
     copyTex: 'TeXをコピー',
     insertToNote: 'Noteに挿入',
     headerPlaceholder: 'ヘッダー',
@@ -19,7 +20,8 @@ const translations = {
       tabGetFailed: 'タブの取得に失敗しました',
       texPasted: 'TeXを読み込みました',
       pasteFailed: 'クリップボードの読み込みに失敗しました',
-      invalidTeX: '無効なTeX形式です'
+      invalidTeX: '無効なTeX形式です',
+      tableReset: 'リセットしました'
     }
   },
   en: {
@@ -28,6 +30,7 @@ const translations = {
     hasHeader: 'Header',
     generateTable: 'Generate',
     pasteTeX: 'Paste TeX',
+    resetTable: 'Reset',
     copyTex: 'Copy TeX',
     insertToNote: 'Insert to Note',
     headerPlaceholder: 'Header',
@@ -42,7 +45,8 @@ const translations = {
       tabGetFailed: 'Failed to get tab',
       texPasted: 'TeX loaded',
       pasteFailed: 'Failed to read clipboard',
-      invalidTeX: 'Invalid TeX format'
+      invalidTeX: 'Invalid TeX format',
+      tableReset: 'Reset'
     }
   }
 };

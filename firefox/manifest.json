@@ -10,7 +10,8 @@
   "permissions": [
     "activeTab",
     "clipboardRead",
-    "contextMenus"
+    "contextMenus",
+    "storage"
   ],
   "background": {
     "scripts": ["background.js"]

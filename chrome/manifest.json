@@ -12,7 +12,8 @@
     "activeTab",
     "scripting",
     "clipboardRead",
-    "contextMenus"
+    "contextMenus",
+    "storage"
   ],
   "host_permissions": [
     "https://editor.note.com/*"
