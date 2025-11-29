@@ -127,29 +127,20 @@ python3 create_icons.py
 - `manifest.json`: 拡張機能の設定ファイル
 
 ### 技術仕様
-
 - **データの保存先**: ブラウザのlocalStorage（Firefox）/ chrome.storage.local（Chrome）
 - **保存内容**:
-  - 現在編集中の表データ（tableData）
-  - ヘッダー行の設定（hasHeader）
-  - 言語設定（language）
+   - 現在編集中の表データ（tableData）
+   - ヘッダー行の設定（hasHeader）
+   - 言語設定（language）
 - **保存形式**: JSON形式
 - **保存期限**: ブラウザのストレージをクリアするまで永続
 - **対応URL**: https://editor.note.com/* のみ
 
 ## ライセンス
 
-MIT License
+Mozilla Public License 2.0 (MPL-2.0)
+詳細・全文は https://www.mozilla.org/en-US/MPL/2.0/ を参照してください。
 
 ## 作成者
 
-Claude Code を使用して作成されました。
-
-## 注意事項
-
-- **対応URL**: editor.note.com のみに対応しています
-  - 旧URLのnote.comでは動作しません
-  - コンテキストメニューはeditor.note.com上でのみ表示されます
-- editor.note.comのサイト構造が変更された場合、エディタへの自動挿入機能が動作しなくなる可能性があります
-  - その場合は「TeXをコピー」機能を使用して手動で貼り付けてください
-- 自動保存機能により、編集中のデータは自動的に保存されますが、複数の表を管理する履歴機能は実装されていません
+@torun225
